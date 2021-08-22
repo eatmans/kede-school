@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "健康上报",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-modal": "/node-modules/uview-ui/components/u-modal/u-modal",
+    "u-subsection": "/node-modules/uview-ui/components/u-subsection/u-subsection",
+    "u-popup": "/node-modules/uview-ui/components/u-popup/u-popup"
+  }
+}

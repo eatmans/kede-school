@@ -1,0 +1,48 @@
+
+page {
+	background-color: #F8F8F8;
+}
+.c-box {
+	background-color: #FFFFFF;
+	padding: 25rpx;
+	margin: 10rpx 20rpx;
+	border-radius: 25rpx;
+}
+.c-label {
+	display: inline-block;
+	padding-bottom: 10rpx;
+}
+.c-input {
+	padding: 10rpx;
+	background-color: #F8F8F8;
+	border-radius: 10rpx;
+}
+.c-textarea-addr {
+	background-color: #F8f8f8;
+	padding: 10rpx;
+	margin: 0 20rpx;
+	height: 60rpx;
+	border-radius: 10rpx;
+}
+.c-textarea {
+	background-color: #F8f8f8;
+	padding: 10rpx;
+	margin: 0 20rpx;
+	height: 120rpx;
+	border-radius: 10rpx;
+}
+.c-submit {
+	color: #FFFFFF;
+	background-color: #2979ff;
+	margin: 10rpx 0;
+	border-radius: 50rpx;
+}
+.c-save {
+	color: #ffffff;
+	font-size: 25rpx;
+	background-color: #c5c5c5;
+	margin: 10rpx 175rpx;
+	border-radius: 50rpx;
+}
+
+

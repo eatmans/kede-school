@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/my/my",
+    "pages/index/index",
+    "pages/report/report",
+    "pages/manageToken/manageToken",
+    "pages/detail/detail",
+    "pages/login/login",
+    "pages/dailyRecord/dailyRecord",
+    "pages/about/about",
+    "pages/guide/guide",
+    "pages/internshipSchedul/internshipSchedul",
+    "pages/myData/myData"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "刀片",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#2979ff",
+    "borderStyle": "black",
+    "backgroundColor": "#F8F8F8",
+    "list": [
+      {
+        "pagePath": "pages/report/report",
+        "iconPath": "static/health.png",
+        "selectedIconPath": "static/health-active.png",
+        "text": "健康"
+      },
+      {
+        "pagePath": "pages/dailyRecord/dailyRecord",
+        "iconPath": "static/note.png",
+        "selectedIconPath": "static/note-active.png",
+        "text": "日志"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "iconPath": "static/my.png",
+        "selectedIconPath": "static/my-active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

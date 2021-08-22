@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "实习日志",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-notice-bar": "/node-modules/uview-ui/components/u-notice-bar/u-notice-bar",
+    "u-calendar": "/node-modules/uview-ui/components/u-calendar/u-calendar"
+  }
+}
