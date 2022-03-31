@@ -1,21 +1,15 @@
 {
   "pages": [
-    "pages/my/my",
     "pages/index/index",
+    "pages/my/my",
     "pages/report/report",
-    "pages/manageToken/manageToken",
-    "pages/detail/detail",
-    "pages/login/login",
-    "pages/dailyRecord/dailyRecord",
     "pages/about/about",
-    "pages/guide/guide",
-    "pages/internshipSchedul/internshipSchedul",
-    "pages/myData/myData"
+    "pages/guide/guide"
   ],
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "刀片",
+    "navigationBarTitleText": "可得校园",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
@@ -26,16 +20,10 @@
     "backgroundColor": "#F8F8F8",
     "list": [
       {
-        "pagePath": "pages/report/report",
+        "pagePath": "pages/index/index",
         "iconPath": "static/health.png",
         "selectedIconPath": "static/health-active.png",
-        "text": "健康"
-      },
-      {
-        "pagePath": "pages/dailyRecord/dailyRecord",
-        "iconPath": "static/note.png",
-        "selectedIconPath": "static/note-active.png",
-        "text": "日志"
+        "text": "首页"
       },
       {
         "pagePath": "pages/my/my",
@@ -45,5 +33,6 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }

@@ -1,6 +1,6 @@
 {
-    "name" : "CodeSchool",
-    "appid" : "",
+    "name" : "可得校园",
+    "appid" : "__UNI__947079A",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -53,7 +53,7 @@
         "appid" : "wx7c816096225ec639",
         "setting" : {
             "urlCheck" : false,
-            "es6" : false,
+            "es6" : true,
             "postcss" : true,
             "minified" : true
         },

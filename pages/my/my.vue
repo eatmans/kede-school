@@ -1,177 +1,106 @@
 <template>
-	<view class="con">
-		<view class="c-userinfo" v-if="!hasUserInfo">
-			<button class="c-login-button" @tap="userAuthorized()">授权登录</button>
+	<view class="c-box">
+
+		<view class="c-top">
+			<view class="c-header" v-if="userInfo == null">
+				<image class="c-image" :src="tx" mode="" ></image>
+			</view>
+			<view class="c-header2" v-if="userInfo != null">
+				<image class="c-image" :src="userInfo.avatarUrl" mode=""></image>
+			</view>
+			<text class="c-nickname">{{userInfo.nickName ?userInfo.nickName : "未登录"}}</text>
 		</view>
-		<view class="c-userinfo" v-else>
-			<image class="c-avator" :src="userInfo.avatarUrl" mode=""></image>
-			<view class="c-user-info-more">
-				<text class="c-nick-name">{{userInfo.nickName}}</text>
-				<view class="c-user-status">状态：{{userStatus}}</view>
+
+		<!-- 操作列表 -->
+		<view class="c-lists">
+			<view class="c-list" @tap="switchLanguage()">
+				<text class="c-item-text">Language</text>
+				<u-icon class="c-item-icon" name="arrow-right" color="#d3dbe2" size="28"></u-icon>
+			</view>
+			<view class="c-list" @tap="gotoUser()" v-if="userInfo.nickName == 'EATMANS'">
+				<text class="c-item-text">用户面板</text>
+				<u-icon class="c-item-icon" name="arrow-right" color="#d3dbe2" size="28"></u-icon>
+			</view>
+			<view class="c-list" @tap="gotoFeelBack()">
+				<text class="c-item-text">意见反馈</text>
+				<u-icon class="c-item-icon" name="arrow-right" color="#d3dbe2" size="28"></u-icon>
+			</view>
+			<view class="c-list" @tap="gotoHelp()">
+				<text class="c-item-text">使用说明</text>
+				<u-icon name="arrow-right" color="#d3dbe2" size="28"></u-icon>
+			</view>
+
+			<view class="c-list" @tap="gotoAboutUs()">
+				<text class="c-item-text">关于我们</text>
+				<u-icon class="c-item-icon" name="arrow-right" color="#d3dbe2" size="28"></u-icon>
 			</view>
 		</view>
 
-		<view class="c-tools-box">
-			<view class="c-tools-item" @click="gotoTodoSchedul()">
-				<view class="">
-					{{todoNum}}
-				</view>
-				<view class="c-tools-text">
-					健康上报
-				</view>
-			</view>
-
-			<view class="c-tools-item" @click="gotoInternshipSchedul()">
-				<view class="">
-					0
-				</view>
-				<view class="c-tools-text">
-					实习日志
-				</view>
-			</view>
+		<view class="c-welcome" v-if="!hasLogin" @tap="userAuthorized()">
+			<button class="c-sign-in">授权登录</button>
 		</view>
-
-		<view class="c-button-list">
-			<view class="c-button-item">
-				<view class="c-button" @click="gotoManageToken()">
-					<u-icon name="pushpin" :size="46"></u-icon> <span class="c-button-text">管理Token</span>
-				</view>
-			</view>
-
-			<view class="c-button-item">
-				<view class="c-button" @click="gotoGuide()">
-					<u-icon name="question-circle" :size="46"></u-icon> <span class="c-button-text">使用指南</span>
-				</view>
-			</view>
-			<view class="c-button-item">
-				<view class="c-button" @click="gotoFaceback()">
-					<u-icon name="error-circle" :size="46"></u-icon> <span class="c-button-text">反馈问题</span>
-				</view>
-			</view>
-			<view class="c-button-item">
-				<navigator class="c-button-code" target="miniProgram" open-type="navigate" app-id="wx98bd4a935aea8f5e"
-					extra-data="" version="release">
-					<u-icon name="gift" :size="46"></u-icon> <span class="c-button-text">可得快传</span>
-				</navigator>
-			</view>
-			<view class="c-button-item">
-				<view class="c-button" @click="gotoAbout()">
-					<u-icon name="grid" :size="46"></u-icon> <span class="c-button-text">关于</span>
-				</view>
-			</view>
-		</view>
-		<view class="c-box">
-			<view class="c-button-item">
-				<button class="c-button-logout" @click="logout()" v-if="hasUserInfo">
-					<u-icon name="minus-circle" :size="46"></u-icon> <span class="c-button-text">退出登录</span>
-				</button>
-			</view>
-			<view class="c-button-item" v-if="wbHasLogin">
-				<button class="c-button-logout" @click="logoutWB()">
-					<u-icon name="minus-circle" :size="46"></u-icon> <span class="c-button-text">退出网办</span>
-				</button>
-			</view>
-			<view class="c-button-item" v-else-if="!wbHasLogin">
-				<button class="c-button-login" @click="gotoLogin()">
-					<u-icon name="pause-circle" :size="46"></u-icon> <span class="c-button-text">登录网办</span>
-				</button>
-			</view>
-		</view>
-		<view class="c-version">
-			<text>
-				版本v0.0.1bate
-			</text>
+		<view class="c-welcome" v-if="hasLogin" @tap="logoutFun()">
+			<button class="c-logut">退出登录</button>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations,
+		mapActions,
+		mapGetters
+	} from 'vuex'
 	export default {
 		data() {
 			return {
-				hasUserInfo: false,
-				userInfo: null,
 				userProfile: null,
-				wbHasLogin: false,
 				userStatus: "正常",
-				isEatmans: false,
-				todoNum: 0,
-				passwordNum: 0,
-				dailyRecordNum: 0
+				tx: "../../static/logo.png",
+				username: ""
 			}
 		},
-		onLoad: function() {
-			this.judgeLoginStatus();
-			this.judgeGuptStatus();
-			this.enableShareMenu();
-			this.initUserInfo();
+		onLoad() {
+			this.getUserInfo();
 		},
 		onShow() {
-			this.judgeLoginStatus()
-			this.judgeGuptStatus()
+			this.username = "可得校园";
+		},
+		onShareAppMessage() {
+			return {
+				title: '可得校园',
+				path: '/pages/index/index',
+				imageUrl: 'https://transfer.rjxh.cloud/transfer/pMqn7LitId1p37dcd02e6e5856125fbc1597fa38db9b.png'
+			}
+		},
+		computed: {
+			...mapState(['hasLogin', "userInfo", "serverUrl"]),
 		},
 		methods: {
-			enableShareMenu() {
-				wx.showShareMenu({
-					withShareTicket: true,
-					menus: ['shareAppMessage', 'shareTimeline']
-				})
+			...mapMutations(['login', "logout"]),
+			Toast(data, duration = 1000) {
+				uni.showToast(Object.assign({}, data, {
+					duration
+				}))
 			},
-			initUserInfo() {
-				var todoListLength = uni.getStorageSync("todoList").length;
-				this.todoNum = todoListLength >= 1 ? todoListLength : 0;
-			},
-			// 判断登录状态
-			judgeLoginStatus() {
-				const userInfo = uni.getStorageSync('userInfo');
-				if (userInfo != null && userInfo != "") {
-					this.hasUserInfo = true;
-					this.userInfo = userInfo;
-					if (userInfo.nickName == "EATMANS") {
-						this.isEatmans = true;
-					}
-
-				}
-			},
-			judgeGuptStatus() {
-				const gupt_token = uni.getStorageSync('gupt_token');
-				if (gupt_token != null && gupt_token != "") {
-					this.wbHasLogin = true;
-				}
-			},
-			// 退出登录
-			logout() {
-				uni.removeStorageSync('userInfo');
-				this.hasUserInfo = false;
-			},
-			// 退出登录
-			logoutWB() {
-				uni.removeStorageSync('gupt_token');
-				this.wbHasLogin = false;
-			},
-			gotoManageToken() {
-				uni.navigateTo({
-					url: '../manageToken/manageToken',
-				});
-			},
-			gotoPasswordManager() {
-				uni.navigateTo({
-					url: '../passwordManager/passwordManager',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
-				});
-			},
-
 			userAuthorized() {
 				wx.getUserProfile({
 					desc: '用于完善会员资料',
 					success: res => {
-						this.hasUserInfo = true
-						this.userInfo = res.userInfo
-						this.userProfile = res
+						this.userProfile = res;
 						this.onGetUserInfo();
 					}
+				})
+			},
+			getUserInfo() {
+				let user = uni.getStorageSync("userInfo");
+				if (user != "") {
+					this.login(user)
+				};
+				wx.showShareMenu({
+				  withShareTicket: true,
+				  menus: ['shareAppMessage', 'shareTimeline']
 				})
 
 			},
@@ -179,12 +108,12 @@
 			onGetUserInfo() {
 				var that = this
 				wx.login({
-					success: function(login_res) {
+					success: login_res => {
 						wx.request({
-							url: 'https://api.rjxh.cloud/wx/login',
+							url: this.serverUrl + 'user/login',
 							method: 'POST',
 							header: {
-								'content-type': 'application/x-www-form-urlencoded'
+								'content-type': 'application/json'
 							},
 							data: {
 								code: login_res.code, //临时登录凭证
@@ -193,15 +122,11 @@
 								encrypteData: that.userProfile.encryptedData, //用户敏感信息
 								iv: that.userProfile.iv //解密算法的向量
 							},
-							success: function(res) {
-								console.log("获取的user", res.data)
+							success: res => {
 								if (res.data.code == 200) {
 									// 7.小程序存储skey（自定义登录状态）到本地
 									that.userStatus = "正常"
-									uni.setStorageSync('userInfo',
-										res.data.data);
-									uni.setStorageSync('skey', res.data
-										.data.skey);
+									this.login(res.data.data)
 									uni.showToast({
 										title: '登录成功'
 									});
@@ -232,238 +157,176 @@
 						})
 					}
 				})
-
-				this.hasUserInfo = true
 			},
-			gotoFaceback() {
+			logoutFun() {
+				this.logout()
+			},
+			gotoAccount() {
 				uni.navigateTo({
-					url: '../faceback/faceback',
-					success: res => {},
+					url: '../account/account',
 				});
 			},
-			gotoInternshipSchedul() {
-				uni.navigateTo({
-					url: '../internshipSchedul/internshipSchedul',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
+			switchLanguage() {
+				uni.showToast({
+					title: '努力适配中！',
+					icon: 'none'
 				});
 			},
-
-			gotoGuide() {
+			gotoFeelBack() {
 				uni.navigateTo({
-					url: '../guide/guide',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
+					url: '../feelback/feelback',
 				});
 			},
-
-			gotoAbout: function() {
+			gotoHelp() {
+				uni.navigateTo({
+					url: '../help/help',
+				});
+			},
+			gotoAboutUs() {
 				uni.navigateTo({
 					url: '../about/about',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
+				});
+			},
+			
+			gotoUser(){
+				uni.navigateTo({
+					url: '../user/user',
 				});
 			},
 
-			gotoLogin() {
+			gotoTest() {
 				uni.navigateTo({
-					url: '../login/login',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
+					url: '../test/test',
 				});
 			},
-			showTips: function() {
-				uni.showToast({
-					title: 'EATMANS在偷懒',
-					icon: 'none',
-					duration: 1000
-				});
-			}
 		}
 	}
 </script>
 
-<style coped lang="scss">
-	.con {
-		margin-left: 2%;
-		margin-right: 2%;
-	}
-
+<style>
 	.c-box {
-		background-color: #F8F8F8;
-		padding: 20rpx 0;
-		margin: 10rpx 20rpx;
-		border-radius: 25rpx;
-	}
-
-	.c-login-button {
-		width: 80%;
-		background-color: #2979ff;
-		color: #F1F1F1;
-		border-radius: 45rpx;
-	}
-
-	.c-userinfo {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		margin: 20rpx;
-		padding: 20rpx;
-		height: 200rpx;
-		border-radius: 10rpx;
-		background-color: #F8F8F8;
-		color: #000000;
-		font-size: 1.5em;
-	}
-
-	.c-user-info-more {
-		margin: 20rpx;
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
 		align-items: center;
 	}
 
-	.c-nick-name {
-		font-size: 35rpx;
+	.c-top {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 400rpx;
+		width: 100%;
+		background-color: #f5f0f0;
+		border-radius: 0 0 45rpx 45rpx;
 	}
 
-	.c-user-status {
-		display: inline-block;
-		border-radius: 20rpx;
-		padding: 10rpx;
-		font-size: 25rpx;
-		margin: 0 10rpx;
-		background-color: #ffffff;
-		color: #2979ff;
+	.c-header {
+		width: 200rpx;
+		height: 200rpx;
+		padding: 40rpx;
+		border-radius: 50rpx;
+		background-color: #FFFFFF;
+	}
+	
+	.c-header2 {
+		width: 200rpx;
+		height: 200rpx;
+		border-radius: 50rpx;
+		background-color: #FFFFFF;
+
 	}
 
-	.grid-text {
-		font-size: 28rpx;
-		margin-top: 4rpx;
-		color: $u-type-info;
-	}
-
-	.c-avator {
-		width: 100rpx;
-		height: 100rpx;
+	.c-image {
+		height: 100%;
+		width: 100%;
 		border-radius: 50rpx;
 	}
 
+	.c-nickname {
+		margin-top: 20rpx;
+	}
+
+	.c-lists {
+		margin-top: 30rpx;
+		display: flex;
+		flex-direction: column;
+	}
+
 	.c-list {
-		margin: 20rpx;
-	}
-
-	.c-button-list {
-		margin: 20rpx;
-		padding: 10rpx 0;
-		border-radius: 20rpx;
-		background-color: #F8F8F8;
-	}
-
-	.c-button-item {
-		margin: 10rpx;
-	}
-
-
-	.c-button {
 		display: flex;
-		border-radius: 45rpx;
-		align-items: center;
+		justify-content: space-between;
+	}
+
+	.c-item-text {
+		margin-top: 20rpx;
+		margin-right: 400rpx;
 		font-size: 35rpx;
-		height: 80rpx;
-		padding: 0;
-		color: #393B44;
-		background-color: #FFFFFF;
-		border: 2rpx solid #FFFFFF;
-		padding-left: 20rpx;
 	}
 
-	.c-button-code {
+	.c-item-icon {}
+
+	.c-upgrade-pro {
+		margin-top: 40rpx;
 		display: flex;
-		align-items: center;
-		font-size: 35rpx;
-		height: 80rpx;
-		padding: 0;
-		background-color: #FFFFFF;
-		border: 2rpx solid #FFFFFF;
-		border-radius: 45rpx;
-		padding-left: 20rpx;
+		border: 2px solid transparent;
+		border-radius: 30rpx;
+		background-color: transparent;
+		border-color: #f7aa00;
+		padding: 10rpx;
+
 	}
 
-	.c-button-login {
-		color: #FFF;
-		background-color: #2979ff;
-		border-radius: 45rpx;
-		display: flex;
-		align-items: center;
-		font-size: 35rpx;
-		height: 80rpx;
-		border: 1rpx;
-		padding: 0;
-		padding-left: 20rpx;
-	}
-
-	.c-button-logout {
-		color: #FFF;
-		background-color: #fa3534;
-		border-radius: 45rpx;
-		display: flex;
-		align-items: center;
-		font-size: 35rpx;
-		height: 80rpx;
-		border: 1rpx;
-		padding: 0;
-		padding-left: 20rpx;
-	}
-
-	.c-xiushi {
-		display: block;
-		width: 10rpx;
-		height: 100%;
-		background-color: #F8F8F8;
-		margin-right: 10rpx;
-	}
-
-
-	.c-button-text {
-		margin-left: 10rpx;
-		// color: #393B44;
-	}
-
-	.c-tools-box {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin: 0 20rpx;
-		border-radius: 20rpx;
-		background-color: #F8F8F8;
-	}
-
-	.c-tools-item {
+	.c-left {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		padding: 10rpx;
-		height: 180rpx;
-		width: 280rpx;
-		margin: 10rpx;
-		border-radius: 20rpx;
-		background-color: #FFFFFF;
+		width: 175rpx;
 	}
 
-	.c-tools-text {
+	.c-righte {
 		display: flex;
+		flex-direction: column;
+		width: 100%;
 	}
 
-	.c-version {
+	.c-sign-in {
+		margin-top: 50rpx;
+		width: 580rpx;
+		font-size: 30rpx;
+		padding: 5rpx;
+		border-radius: 45rpx;
+		color: #FFFFFF;
+		background-color: #425e92;
+	}
+
+	.c-logut {
+		margin-top: 50rpx;
+		width: 580rpx;
+		font-size: 30rpx;
+		padding: 5rpx;
+		border-radius: 45rpx;
+		color: #FFFFFF;
+		background-color: #f7aa00;
+	}
+
+	.c-slot-content {
 		display: flex;
-		justify-content: center;
+		flex-direction: column;
 		align-items: center;
-		color: #c8c9cc;
+		justify-content: center;
+		padding: 20rpx;
+	}
+
+	.c-mask-iamge {
+		margin: 30rpx 0;
+		width: 200rpx;
+		height: 200rpx;
+	}
+
+	.c-gray {
+		color: gray;
 	}
 </style>
